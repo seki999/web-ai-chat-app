@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 聊天工具</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #4285f4;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: white;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        .bot-message {
+            background-color: #f1f1f1;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        .message-content {
+            word-wrap: break-word;
+        }
+        .input-container {
+            display: flex;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 10px 10px;
+        }
+        #user-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+        }
+        #send-button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        #send-button:hover {
+            background-color: #3367d6;
+        }
+        .typing-indicator {
+            display: none;
+            background-color: #f1f1f1;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-right: auto;
+            margin-bottom: 15px;
+            width: 60px;
+        }
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #666;
+            margin-right: 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingAnimation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .error-message {
+            color: #d93025;
+            margin-top: 5px;
+            text-align: center;
+            display: none;
+        }
+        code {
+            background-color: #f8f8f8;
+            border-radius: 3px;
+            padding: 2px 5px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gemini 聊天工具</h1>
+        </div>
+        
+        <div class="chat-container" id="chat-container">
+            <div class="message bot-message">
+                <div class="message-content">
+                    欢迎使用Gemini聊天工具！请输入你的问题，我会尽力回答。
+                </div>
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+        
+        <div class="error-message" id="error-message"></div>
+        
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="输入你的问题...">
+            <button id="send-button">发送</button>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const errorMessage = document.getElementById('error-message');
+        
+        // 发送消息
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // 添加用户消息到聊天框
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // 显示正在输入指示器
+            typingIndicator.style.display = 'block';
+            errorMessage.style.display = 'none';
+            
+            // 滚动到最新消息
+            scrollToBottom();
+            
+            // 调用后端API
+            callBackendAPI(message);
+        }
+        
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender === 'user' ? 'user-message' : 'bot-message'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            // 处理markdown风格的代码块
+            if (sender === 'bot') {
+                // 简单的markdown解析
+                content = content
+                    .replace(/```(\w*)([\s\S]*?)```/g, function(match, language, code) {
+                        return `<pre><code>${code.trim()}</code></pre>`;
+                    })
+                    .replace(/`([^`]+)`/g, '<code>$1</code>')
+                    .replace(/\n/g, '<br>');
+            }
+            
+            messageContent.innerHTML = content;
+            messageDiv.appendChild(messageContent);
+            chatContainer.appendChild(messageDiv);
+            
+            // 滚动到最新消息
+            scrollToBottom();
+        }
+        
+        async function callBackendAPI(prompt) {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt })
+                });
+                
+                const data = await response.json();
+                typingIndicator.style.display = 'none';
+                
+                if (data.error) {
+                    // 显示错误信息
+                    errorMessage.textContent = `错误: ${data.error}`;
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+                
+                if (data.response) {
+                    addMessage(data.response, 'bot');
+                } else {
+                    // 显示错误信息
+                    errorMessage.textContent = '无法获取有效的响应';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                errorMessage.textContent = `错误: ${error.message || '服务器连接失败'}`;
+                errorMessage.style.display = 'block';
+                console.error('Error:', error);
+            }
+        }
+        
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

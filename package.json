@@ -1,0 +1,28 @@
+{
+    "name": "gemini-chat-app",
+    "version": "1.0.0",
+    "description": "基于Gemini API的聊天应用",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js",
+        "encrypt": "node server.js encrypt"
+    },
+    "keywords": [
+        "gemini",
+        "chat",
+        "api",
+        "nodejs"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.8.1",
+        "body-parser": "^1.20.3",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
