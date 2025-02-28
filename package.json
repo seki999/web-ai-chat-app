@@ -1,7 +1,7 @@
 {
-    "name": "gemini-chat-app",
+    "name": "ai-chat-app",
     "version": "1.0.0",
-    "description": "基于Gemini API的聊天应用",
+    "description": "基于ai API的聊天应用",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
@@ -9,7 +9,7 @@
         "encrypt": "node server.js encrypt"
     },
     "keywords": [
-        "gemini",
+        "ai",
         "chat",
         "api",
         "nodejs"

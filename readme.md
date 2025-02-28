@@ -1,6 +1,6 @@
-# Gemini 聊天应用
+# AI 聊天应用
 
-一个基于Gemini API的聊天应用，前端使用HTML/CSS/JavaScript实现，后端使用Node.js和Express框架。
+一个基于AI API的聊天应用，前端使用HTML/CSS/JavaScript实现，后端使用Node.js和Express框架。
 
 ## 特点
 
@@ -15,7 +15,7 @@
 
 - Node.js (>=14.x)
 - npm 或 yarn
-- Gemini API密钥
+- API密钥
 
 ### 安装步骤
 
@@ -27,6 +27,9 @@ npm install
 ```
 3. 必须在环境变量里面使用，先设置环境变量
 export GEMINI_API_KEY="API KEY"
+## How to getGemini API key
+https://aistudio.google.com/app/apikey
+
 
 4. 启动服务器
 ```bash
@@ -39,7 +42,7 @@ npm start
 ## 项目结构
 
 ```
-gemini-chat-app/
+web-ai-chat-app/
 │
 ├── public/                # 静态文件目录
 │   └── index.html         # 前端页面
@@ -68,6 +71,4 @@ MIT
 lsof -i :3000
 kill -9 <PID>
 
-## How to getGemini API key
-https://aistudio.google.com/app/apikey
 
