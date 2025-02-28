@@ -111,6 +111,20 @@
         #send-button:hover {
             background-color: #3367d6;
         }
+        #clear-history-button{
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        #clear-history-button:hover{
+            background-color: #ccc;
+        }
 
         .typing-indicator {
             display: none;
@@ -205,6 +219,7 @@
         <div class="input-container">
             <input type="text" id="user-input" placeholder="输入你的问题...">
             <button id="send-button">发送</button>
+            <button id="clear-history-button">清除历史记录</button>
         </div>
     </div>
 
@@ -218,9 +233,17 @@
 
         // LocalStorage Key
         const chatHistoryKey = 'chatHistory';
+        // Flag to track if a user message has been sent
+        let userMessageSent = false;
 
         // Load chat history from localStorage on page load
         loadChatHistory();
+        // Hide typing indicator on page load
+        typingIndicator.style.display = 'none';
+
+        // Add event listener to the clear history button
+        const clearHistoryButton = document.getElementById('clear-history-button');
+        clearHistoryButton.addEventListener('click', clearChatHistory);
 
         // 发送消息
         sendButton.addEventListener('click', sendMessage);
@@ -233,6 +256,8 @@
         function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
+            // Set the flag to true when a user message is sent
+            userMessageSent = true;
 
             // 添加用户消息到聊天框
             // Save to local storage
@@ -276,7 +301,7 @@
 
             // 滚动到最新消息
             // Save to local storage
-            if (sender === 'bot') {
+            if (sender === 'bot' && userMessageSent) {
                 saveMessageToLocalStorage(content, 'bot')
             }
             scrollToBottom();
@@ -339,18 +364,25 @@
         // Load chat history from localStorage
         function loadChatHistory() {
             const history = JSON.parse(localStorage.getItem(chatHistoryKey)) || [];
-
-            // Add each message from history to the chat container
-            history.forEach(item => {
-                addMessage(item.content, item.sender);
-            });
+            const chatContainer = document.getElementById('chat-container');
+            // Check if the chat container is empty before loading history
+            if (chatContainer.children.length <= 1) {
+                // Add each message from history to the chat container
+                history.forEach(item => {
+                    addMessage(item.content, item.sender);
+                });
+            }
 
             //scroll to bottom
             scrollToBottom();
+            // Reset the flag when loading history
+            userMessageSent = false;
+        }
+        function clearChatHistory() {
+            localStorage.removeItem('chatHistory');
+            location.reload(); // Reload the page to reflect the change
         }
 
-        //clear localStorage
-        //localStorage.removeItem('chatHistory')
     </script>
 </body>
 
