@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 聊天工具</title>
+    <title>AI Chat Tool</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -111,7 +112,8 @@
         #send-button:hover {
             background-color: #3367d6;
         }
-        #clear-history-button{
+
+        #clear-history-button {
             background-color: #e0e0e0;
             color: #333;
             border: none;
@@ -122,7 +124,8 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-        #clear-history-button:hover{
+
+        #clear-history-button:hover {
             background-color: #ccc;
         }
 
@@ -197,13 +200,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>AI 聊天工具</h1>
+            <h1>AI Chat Tool</h1>
         </div>
 
         <div class="chat-container" id="chat-container">
             <div class="message bot-message">
                 <div class="message-content">
-                    欢迎使用AI聊天工具！请输入你的问题，我会尽力回答。
+                    Welcome to the AI Chat Tool! Please enter your question, and I will do my best to answer.
                 </div>
             </div>
         </div>
@@ -217,14 +220,14 @@
         <div class="error-message" id="error-message"></div>
 
         <div class="input-container">
-            <input type="text" id="user-input" placeholder="输入你的问题...">
-            <button id="send-button">发送</button>
-            <button id="clear-history-button">清除历史记录</button>
+            <input type="text" id="user-input" placeholder="Enter your question...">
+            <button id="send-button">Send</button>
+            <button id="clear-history-button">Clear History</button>
         </div>
     </div>
 
     <script>
-        // 全局变量
+        // Global variables
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
@@ -245,7 +248,7 @@
         const clearHistoryButton = document.getElementById('clear-history-button');
         clearHistoryButton.addEventListener('click', clearChatHistory);
 
-        // 发送消息
+        // Send Message
         sendButton.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -259,21 +262,21 @@
             // Set the flag to true when a user message is sent
             userMessageSent = true;
 
-            // 添加用户消息到聊天框
+            // Add user message to chat box
             // Save to local storage
             saveMessageToLocalStorage(message, 'user')
 
             addMessage(message, 'user');
             userInput.value = '';
 
-            // 显示正在输入指示器
+            // Show typing indicator
             typingIndicator.style.display = 'block';
             errorMessage.style.display = 'none';
 
-            // 滚动到最新消息
+            // Scroll to the latest message
             scrollToBottom();
 
-            // 调用后端API
+            // Call backend API
             callBackendAPI(message);
         }
 
@@ -284,9 +287,9 @@
             const messageContent = document.createElement('div');
             messageContent.className = 'message-content';
 
-            // 处理markdown风格的代码块
+            // Handle markdown style code blocks
             if (sender === 'bot') {
-                // 简单的markdown解析
+                // Simple markdown parsing
                 content = content
                     .replace(/```(\w*)([\s\S]*?)```/g, function (match, language, code) {
                         return `<pre><code>${code.trim()}</code></pre>`;
@@ -299,7 +302,7 @@
             messageDiv.appendChild(messageContent);
             chatContainer.appendChild(messageDiv);
 
-            // 滚动到最新消息
+            // Scroll to the latest message
             // Save to local storage
             if (sender === 'bot' && userMessageSent) {
                 saveMessageToLocalStorage(content, 'bot')
@@ -321,8 +324,8 @@
                 typingIndicator.style.display = 'none';
 
                 if (data.error) {
-                    // 显示错误信息
-                    errorMessage.textContent = `错误: ${data.error}`;
+                    // Display error message
+                    errorMessage.textContent = `Error: ${data.error}`;
                     errorMessage.style.display = 'block';
                     return;
                 }
@@ -330,13 +333,13 @@
                 if (data.response) {
                     addMessage(data.response, 'bot');
                 } else {
-                    // 显示错误信息
-                    errorMessage.textContent = '无法获取有效的响应';
+                    // Display error message
+                    errorMessage.textContent = 'Unable to get a valid response';
                     errorMessage.style.display = 'block';
                 }
             } catch (error) {
                 typingIndicator.style.display = 'none';
-                errorMessage.textContent = `错误: ${error.message || '服务器连接失败'}`;
+                errorMessage.textContent = `Error: ${error.message || 'Server connection failed'}`;
                 errorMessage.style.display = 'block';
                 console.error('Error:', error);
             }
@@ -378,11 +381,14 @@
             // Reset the flag when loading history
             userMessageSent = false;
         }
+
         function clearChatHistory() {
             localStorage.removeItem('chatHistory');
             location.reload(); // Reload the page to reflect the change
         }
 
+        //clear localStorage
+        //localStorage.removeItem('chatHistory')
     </script>
 </body>
 

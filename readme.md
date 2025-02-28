@@ -1,56 +1,56 @@
 # web-ai-chat-app
 
-一个基于 AI API 的聊天应用，前端使用 HTML/CSS/JavaScript 实现，后端使用 Node.js 和 Express 框架。
+An AI chat application with a web interface, the front end uses HTML/CSS/JavaScript, and the back end uses the Node.js and Express frameworks.
 
-## 特点
+## Features
 
--   **前后端分离架构:** 前端和后端代码分离，独立运行，便于维护和扩展。
--   **API 密钥安全存储在后端:** API 密钥存储在后端环境变量中，前端无法直接访问，提高了安全性。
--   **实时聊天界面:** 用户可以在网页上实时与 AI 进行对话。
--   **优雅的错误处理:** 前端实现了良好的错误处理机制，可以向用户显示友好的错误信息。
--   **本地持久化聊天记录:** 使用浏览器的 `localStorage` 存储聊天记录，即使关闭浏览器、重启电脑，重新打开也能看到之前的聊天内容。
--   **Markdown 支持:** 支持 Markdown 语法，包括代码块的渲染显示，使 AI 的回复更清晰易读。
+-   **Frontend-Backend Separation:** The front-end and back-end code are separated and run independently, which is convenient for maintenance and expansion.
+-   **Secure API Key Storage:** The API key is stored in the back-end environment variables, and the front end cannot directly access it, improving security.
+-   **Real-time Chat Interface:** Users can chat with AI in real time on the web page.
+-   **Elegant Error Handling:** The front end implements a good error handling mechanism, which can display friendly error messages to users.
+-   **Local Persistent Chat History:** Use the browser's `localStorage` to store the chat history. Even if the browser is closed or the computer is restarted, you can still see the previous chat content when you reopen it.
+-   **Markdown Support:** Supports Markdown syntax, including code block rendering, making AI responses clearer and more readable.
 
-## 安装与设置
+## Installation and Setup
 
-### 前提条件
+### Prerequisites
 
 -   Node.js (>=14.x)
--   npm 或 yarn
--   AI API 密钥 (例如 Gemini API 密钥)
+-   npm or yarn
+-   AI API Key (e.g., Gemini API Key)
 
-### 安装步骤
+### Installation Steps
 
-1.  克隆仓库或下载项目文件。
-2.  安装依赖：
+1.  Clone the repository or download the project files.
+2.  Install dependencies:
 
     ```bash
     npm install
     ```
 
-3.  在环境变量中设置 `GEMINI_API_KEY`：
+3.  Set the `GEMINI_API_KEY` in your environment variables:
 
     ```bash
     export GEMINI_API_KEY="YOUR_API_KEY"
     ```
 
-    **注意:** 将 `"YOUR_API_KEY"` 替换为你实际的 Gemini API 密钥。
+    **Note:** Replace `"YOUR_API_KEY"` with your actual Gemini API key.
 
     ### How to get Gemini API key
 
     [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 
-4.  启动服务器：
+4.  Start the server:
 
     ```bash
     npm start
     ```
 
-5.  访问应用：
+5.  Access the application:
 
-    打开浏览器并访问 `http://localhost:3000`
+    Open your browser and visit `http://localhost:3000`
 
-## 项目结构
+## Project Structure
 
 ```
 web-ai-chat-app/
@@ -64,42 +64,43 @@ web-ai-chat-app/
 ```
 
 
-## 使用说明
 
-1.  打开应用后，你会看到一个聊天界面。
-2.  在底部输入框中输入你的问题。
-3.  点击"发送"按钮或按 Enter 键发送消息。
-4.  等待 AI 的回复。
+## Usage Instructions
 
-## 本地聊天记录持久化 (localStorage)
+1.  After opening the application, you will see a chat interface.
+2.  Enter your question in the input box at the bottom.
+3.  Click the "Send" button or press the Enter key to send the message.
+4.  Wait for the AI's response.
 
-该应用使用浏览器的 `localStorage` 来实现聊天记录的本地持久化存储。这意味着：
+## Local Chat History Persistence (localStorage)
 
--   **数据持久性:** 即使关闭浏览器、重启电脑，聊天记录也不会丢失。下次打开应用时，仍然可以看到之前的聊天内容。
--   **无需登录:** 由于数据存储在本地，无需用户登录即可查看历史记录。
--   **与服务器无关:** 聊天记录存储在用户的浏览器中，与服务器的状态无关。即使服务器重启，聊天记录仍然存在。
+This application uses the browser's `localStorage` to implement local persistent storage of the chat history. This means:
 
-### 工作原理
+-   **Data Persistence:** Even if you close the browser or restart your computer, the chat history will not be lost. You can still see the previous chat content when you open the application next time.
+-   **No Login Required:** Because the data is stored locally, users can view the history without logging in.
+-   **Server-Independent:** The chat history is stored in the user's browser and is independent of the server's state. Even if the server restarts, the chat history will still exist.
 
-1.  **数据存储位置:**
+### How It Works
 
-    *   聊天记录以键值对的形式存储在浏览器的 `localStorage` 中。
-    *   **键名:** `chatHistory`，这是在 `public/index.html` 中定义的常量。
-    *   **键值:** 一个 JSON 字符串，内容是一个包含聊天记录的数组。数组中每个元素是一个对象，包含 `content` (消息内容) 和 `sender` (发送者，user 或 bot)。
-    *   **存储位置：**
-        *   **Chrome/Edge:** 开发者工具 -> Application -> Storage -> Local Storage -> `http://localhost:3000`
-        *   **Firefox:** 开发者工具 -> Storage -> Local Storage -> `http://localhost:3000`
-        *   **Safari:** 开发 -> 显示网页检查器 -> 存储 -> 本地存储 -> `http://localhost:3000`
-    *   **数据结构:** 数据会保存成这样的 JSON 格式：
+1.  **Data Storage Location:**
+
+    *   The chat history is stored in the browser's `localStorage` in key-value pairs.
+    *   **Key Name:** `chatHistory`, which is a constant defined in `public/index.html`.
+    *   **Key Value:** A JSON string containing an array of chat history records. Each element in the array is an object containing `content` (message content) and `sender` (sender, user, or bot).
+    *   **Storage Locations:**
+        *   **Chrome/Edge:** Developer Tools -> Application -> Storage -> Local Storage -> `http://localhost:3000`
+        *   **Firefox:** Developer Tools -> Storage -> Local Storage -> `http://localhost:3000`
+        *   **Safari:** Develop -> Show Web Inspector -> Storage -> Local Storage -> `http://localhost:3000`
+    *   **Data Structure:** The data will be saved in this JSON format:
 
         ```json
         [
             {
-                "content": "你好",
+                "content": "Hello",
                 "sender": "user"
             },
             {
-                "content": "你好！很高兴与你聊天。",
+                "content": "Hello! Nice to chat with you.",
                 "sender": "bot"
             },
             {
@@ -113,63 +114,67 @@ web-ai-chat-app/
         ]
         ```
 
-2.  **保存机制:**
+2.  **Saving Mechanism:**
 
-    *   每当用户发送一条消息或收到 AI 的回复时，都会触发 `saveMessageToLocalStorage(message, sender)` 函数。
-    *   该函数会：
-        *   从 `localStorage` 中获取现有的聊天记录（如果有的话）。
-        *   将新的消息添加到聊天记录中。
-        *   将更新后的聊天记录重新保存到 `localStorage`。
-    *   **调用位置:**
-        *   **发送消息时:** `sendMessage()` 函数中调用了 `saveMessageToLocalStorage(message, 'user')`
-        *   **AI 回复时:** `addMessage()` 函数中调用了 `saveMessageToLocalStorage(content, 'bot')`
+    *   Whenever a user sends a message or receives a response from the AI, the `saveMessageToLocalStorage(message, sender)` function is triggered.
+    *   This function will:
+        *   Get the existing chat history from `localStorage` (if any).
+        *   Add the new message to the chat history.
+        *   Resave the updated chat history to `localStorage`.
+    *   **Call Location:**
+        *   **Sending a Message:** `saveMessageToLocalStorage(message, 'user')` is called in the `sendMessage()` function.
+        *   **AI Response:** `saveMessageToLocalStorage(content, 'bot')` is called in the `addMessage()` function.
 
-3.  **加载机制:**
+3.  **Loading Mechanism:**
 
-    *   当页面加载时，`loadChatHistory()` 函数会被立即调用。
-    *   该函数会：
-        *   从 `localStorage` 中获取聊天记录。
-        *   如果 `localStorage` 中存在聊天记录，则遍历每条记录并显示在聊天界面上。
-        *   如果 `localStorage` 中没有数据, 不会显示历史记录。
+    *   When the page loads, the `loadChatHistory()` function is called immediately.
+    *   This function will:
+        *   Get the chat history from `localStorage`.
+        *   If there is chat history in `localStorage`, iterate through each record and display it on the chat interface.
+        *  If there is no data in `localStorage`, no history will be displayed.
 
-4.  **操作系统和浏览器相关性:**
+4.  **Operating System and Browser Dependencies:**
 
-    *   `localStorage` 是浏览器提供的功能，与操作系统无关。这意味着无论用户使用 Windows、macOS 还是 Linux，只要使用相同的浏览器访问应用，聊天记录都会被正确地保存和加载。
-    *   不同的浏览器之间，`localStorage` 数据是隔离的，互不干扰。这意味着如果用户在 Chrome 中访问并聊天，然后在 Firefox 中访问，他们的聊天记录在两个浏览器中是独立的。
+    *   `localStorage` is a feature provided by browsers and is independent of the operating system. This means that whether users use Windows, macOS, or Linux, as long as they access the application with the same browser, the chat history will be saved and loaded correctly.
+    *   `localStorage` data is isolated between different browsers and does not interfere with each other. This means that if a user visits and chats in Chrome, and then visits in Firefox, their chat history will be separate in the two browsers.
 
-### 清除聊天记录
+### Clearing the Chat History
 
-有两种方法可以清除聊天记录：
+There are three ways to clear the chat history:
 
-1.  **通过浏览器手动清除:**
+1.  **Clear with in-app button (Recommended):**
 
-    *   用户可以手动清除浏览器的本地存储数据，具体操作因浏览器而异（参考上面的数据存储位置，删除本地数据即可）。
-    *   清除浏览器的本地数据会同时清除**所有网站**的 `localStorage` 数据，不仅仅是该应用的聊天记录。
+    *   On the chat interface, you can click the "Clear History" button to clear the current application's chat history.
+    *   After clicking, the chat history will be immediately deleted, and the page will automatically refresh to display an empty chat interface.
 
-2.  **通过代码清除(测试使用):**
+2.  **Manual Clearing in the Browser:**
 
-    *   在 `public/index.html` 文件中, 可以取消注释`//localStorage.removeItem('chatHistory')` 这行代码。
-    *   然后在刷新或者重新打开网页的时候，就会清除。然后把它注释掉。
+    *   Users can manually clear the browser's local storage data. The specific steps vary depending on the browser (refer to the storage locations above and delete the local data).
+    *   Clearing the browser's local data will clear the `localStorage` data of **all websites**, not just this application's chat history.
+
+3.  **Clearing with code (For testing):**
+
+    *   In the `public/index.html` file, you can uncomment the line `//localStorage.removeItem('chatHistory')`.
+    *   Then, when you refresh or reopen the web page, it will clear the data. After the test, comment it out again.
     *   This way can only be used for testing.
 
-### 注意事项
+### Precautions
 
--   **容量限制:** `localStorage` 的存储容量有限（通常为 5MB）。长时间的聊天记录可能会超出这个限制。
--   **安全性:** `localStorage` 存储的数据是明文的，敏感信息不要存放在其中。
+-   **Capacity Limit:** `localStorage` has a limited storage capacity (usually 5MB). Long-term chat histories may exceed this limit.
+-   **Security:** The data stored in `localStorage` is in plain text. Do not store sensitive information in it.
 
-## 安全注意事项
+## Security Precautions
 
--   定期更换 API 密钥。
--   在生产环境中使用 HTTPS。
--   限制 API 请求频率以防止滥用。
+-   Regularly replace the API key.
+-   Use HTTPS in a production environment.
+-   Limit API request frequency to prevent abuse.
 
-## 许可证
+## License
 
 MIT
 
-## 3000 端口占用不能使用的情况
+## What to do if 3000 port is occupied
 
 ```bash
 lsof -i :3000
 kill -9 <PID>
-
