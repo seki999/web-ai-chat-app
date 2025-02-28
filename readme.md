@@ -55,12 +55,12 @@ An AI chat application with a web interface, the front end uses HTML/CSS/JavaScr
 ```
 web-ai-chat-app/
 │
-├── public/                # 静态文件目录
-│   └── index.html         # 前端页面
-├── .gitignore             # Git忽略文件
-├── package.json           # 项目依赖配置
-├── package-lock.json      # 锁定依赖版本
-└── server.js              # 后端服务器代码
+├── public/                # Static files directory
+│   └── index.html         # Frontend page
+├── .gitignore             # Git ignore file
+├── package.json           # Project dependency configuration
+├── package-lock.json      # package-lock.json
+└── server.js              # Backend server code
 ```
 
 
